@@ -71,7 +71,7 @@ struct SignUpScreen: View {
                             Text("Sign In").foregroundColor(.red)
                         }
                     }
-                }.frame(maxWidth: .infinity, maxHeight: 200)
+                }.frame(maxWidth: .infinity, maxHeight: 150)
             }.padding()
             
             if isLoading {
