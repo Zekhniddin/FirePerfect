@@ -10,6 +10,8 @@ import SwiftUI
 struct HomeScreen: View {
     @EnvironmentObject var session: SessionStore
     
+    @ObservedObject var database = RealtimeStore()
+    
     @State private var isLoading = false
     
     func doSignOut() {
@@ -20,12 +22,21 @@ struct HomeScreen: View {
         }
     }
     
+    func apiContacts() {
+        isLoading = true
+        database.loadContacts {
+            isLoading = false
+            print(database.items.count)
+        }
+    }
+    
     var body: some View {
         NavigationView {
             ZStack {
-                if let email = session.session?.email {
-                    Text("Welcome \(email)")
-                }
+                
+                List(database.items, id: \.self) {
+                    ContactCell(contact: $0)
+                }.listStyle(PlainListStyle())
                 
                 if isLoading {
                     ProgressView()
@@ -33,14 +44,18 @@ struct HomeScreen: View {
             }
             .navigationBarItems(trailing:
                                     HStack {
-                                        Image("ic_add")
+                                        NavigationLink(destination: AddContactScreen()) {
+                                            Image("ic_add")
+                                        }
                                         Button(action: {
                                             doSignOut()
                                         }) {
                                             Image("ic_exit")
                                         }
                                     })
-            .navigationBarTitle("Posts", displayMode: .inline)
+            .navigationBarTitle("Contacts", displayMode: .inline)
+        }.onAppear {
+            apiContacts()
         }
     }
 }

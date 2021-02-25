@@ -8,5 +8,8 @@ target 'FirePerfect' do
   # Pods for FirePerfect
 
   pod 'Firebase/Auth'
+  pod 'Firebase/Database'
+  pod 'Firebase/Storage'
+  pod 'SDWebImageSwiftUI'
 
 end
